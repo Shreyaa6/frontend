@@ -1,0 +1,260 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.landing-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  position: relative;
+}
+
+/* Left Section - Image Background */
+.landing-left {
+  position: sticky;
+  top: 0;
+  width: 50%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.landing-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity 0.05s ease-in-out;
+}
+
+.landing-bg-image.active {
+  opacity: 1;
+}
+
+.landing-nav-controls {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 300;
+  z-index: 10;
+}
+
+.nav-separator {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.nav-prev,
+.nav-next {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.nav-prev:hover,
+.nav-next:hover {
+  opacity: 0.7;
+}
+
+.landing-logo {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 10;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Right Section - Content */
+.landing-right {
+  width: 50%;
+  background-color: #faedcd;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 60px;
+}
+
+
+.landing-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 600px;
+}
+
+.story-label {
+  font-size: 12px;
+  color: #999;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  font-weight: 300;
+}
+
+.landing-title {
+  font-size: 4.5rem;
+  line-height: 1.1;
+  margin-bottom: 40px;
+  font-weight: 700;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  letter-spacing: -0.02em;
+  background-image: var(--bg-image);
+  background-size: 200% 100%;
+  background-position: left center;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.title-word {
+  display: inline-block;
+  background-image: var(--bg-image);
+  background-size: 200% 100%;
+  background-position: left center;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.title-ellipsis {
+  color: #666;
+}
+
+.read-more-link {
+  margin-top: 20px;
+}
+
+.read-more-link a {
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #333;
+  transition: opacity 0.2s ease;
+}
+
+.read-more-link a:hover {
+  opacity: 0.6;
+}
+
+.landing-pagination {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 300;
+}
+
+.pagination-current {
+  font-size: 16px;
+}
+
+.pagination-separator {
+  width: 1px;
+  height: 30px;
+  background-color: #333;
+}
+
+.pagination-total {
+  font-size: 16px;
+}
+
+.start-tripping-button {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  z-index: 10;
+}
+
+.tripping-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-transform: lowercase;
+}
+
+.tripping-btn:hover {
+  background-color: #333;
+  color: #faedcd;
+}
+
+.tripping-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.tripping-btn:hover svg {
+  transform: translateX(4px);
+}
+
+@media (max-width: 1024px) {
+  .landing-title {
+    font-size: 3.5rem;
+  }
+  
+  .landing-right {
+    padding: 30px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-container {
+    flex-direction: column;
+  }
+  
+  .landing-left,
+  .landing-right {
+    width: 100%;
+  }
+  
+  .landing-left {
+    height: 50vh;
+  }
+  
+  .landing-title {
+    font-size: 2.5rem;
+  }
+  
+  .landing-pagination {
+    right: 20px;
+  }
+}
+

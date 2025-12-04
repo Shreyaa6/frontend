@@ -1,0 +1,190 @@
+.main-nav {
+  display: flex;
+  gap: 30px;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.main-nav a {
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s ease;
+  position: relative;
+}
+
+.main-nav a:hover {
+  opacity: 0.6;
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #333;
+  transition: width 0.3s ease;
+}
+
+.main-nav a:hover::after {
+  width: 100%;
+}
+
+/* Sticky nav variant */
+.main-nav.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #faedcd;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  margin-bottom: 60px;
+}
+
+/* For Home page */
+.main-nav.home-nav {
+  background-color: transparent;
+  padding: 20px 0;
+  margin-bottom: 40px;
+}
+
+.main-nav.home-nav a {
+  color: #11120D;
+}
+
+.main-nav.home-nav a::after {
+  background-color: #11120D;
+}
+
+/* Pill/Tag Navigation Style for non-home pages */
+.main-nav.pill-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  margin: 0 0 40px 0;
+  width: 100%;
+}
+
+.main-nav:not(.sticky):not(.home-nav) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  margin: 0 0 40px 0;
+  width: 100%;
+}
+
+.nav-pills-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(216, 207, 188, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 8px 12px;
+  border-radius: 50px;
+  border: 1px solid rgba(86, 84, 73, 0.3);
+  box-shadow: 0 2px 8px rgba(17, 18, 13, 0.1);
+  max-width: fit-content;
+  margin: 0 auto;
+}
+
+.nav-pill {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  color: rgba(17, 18, 13, 0.6);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.nav-pill:hover {
+  color: rgba(17, 18, 13, 0.8);
+  background: rgba(255, 251, 244, 0.5);
+}
+
+.nav-pill.active {
+  background: #11120D;
+  color: #FFFBF4;
+  font-weight: 500;
+}
+
+.active-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.nav-add-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #11120D;
+  color: #FFFBF4;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.nav-add-btn:hover {
+  background: #565449;
+  transform: scale(1.05);
+}
+
+.nav-add-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-nav {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .main-nav a {
+    font-size: 13px;
+  }
+
+  .nav-pills-container {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .nav-pill {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .nav-add-btn {
+    width: 32px;
+    height: 32px;
+  }
+}
+

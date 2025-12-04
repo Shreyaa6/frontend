@@ -3,7 +3,7 @@ import logImage from './assets/log.png'
 import './login_signup.css'
 import { api, tokenManager } from './api'
 
-function LoginSignup() {
+function LoginSignup({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -46,8 +46,10 @@ function LoginSignup() {
         
         setLoginData({ email: '', password: '' })
         
-        alert('Login successful! Welcome back.')
         console.log('User logged in:', response.user)
+        if (onLogin) {
+          onLogin()
+        }
       }
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.')
@@ -71,14 +73,15 @@ function LoginSignup() {
       
       if (response.success) {
         tokenManager.save(response.token)
-    setSignupData({
-      email: '',
-      username: '',
-      password: ''
-    })
-        alert('Account created successfully! Redirecting to login...')
-        setIsLogin(true)
+        setSignupData({
+          email: '',
+          username: '',
+          password: ''
+        })
         console.log('User created:', response.user)
+        if (onLogin) {
+          onLogin()
+        }
       }
     } catch (err) {
       setError(err.message || 'Signup failed. Please try again.')

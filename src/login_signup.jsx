@@ -3,10 +3,9 @@ import logImage from './assets/log.png'
 import './login_signup.css'
 import { api, tokenManager } from './api'
 
-function LoginSignup({ onLogin }) {
+function LoginSignup({ onLogin, showError, showSuccess }) {
   const [isLogin, setIsLogin] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
@@ -36,7 +35,6 @@ function LoginSignup({ onLogin }) {
   const handleLoginSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
     
     try {
       const response = await api.login(loginData.email, loginData.password)
@@ -52,7 +50,10 @@ function LoginSignup({ onLogin }) {
         }
       }
     } catch (err) {
-      setError(err.message || 'Login failed. Please try again.')
+      const errorMessage = err.message || 'Login failed. Please try again.'
+      if (showError) {
+        showError(errorMessage)
+      }
       console.error('Login error:', err)
     } finally {
       setLoading(false)
@@ -62,7 +63,6 @@ function LoginSignup({ onLogin }) {
   const handleSignupSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
     
     try {
       const response = await api.signup(
@@ -84,7 +84,10 @@ function LoginSignup({ onLogin }) {
         }
       }
     } catch (err) {
-      setError(err.message || 'Signup failed. Please try again.')
+      const errorMessage = err.message || 'Signup failed. Please try again.'
+      if (showError) {
+        showError(errorMessage)
+      }
       console.error('Signup error:', err)
     } finally {
       setLoading(false)
@@ -99,20 +102,6 @@ function LoginSignup({ onLogin }) {
 
       <main className="login-main">
         <div className="brand-text">Hiraeth</div>
-        
-        {error && (
-          <div style={{
-            color: '#ff4444',
-            backgroundColor: '#ffe6e6',
-            padding: '10px',
-            borderRadius: '5px',
-            marginBottom: '15px',
-            fontSize: '14px',
-            textAlign: 'center'
-          }}>
-            {error}
-          </div>
-        )}
         
         {isLogin ? (
           <form onSubmit={handleLoginSubmit} className="login-form">

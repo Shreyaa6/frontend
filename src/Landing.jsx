@@ -10,7 +10,7 @@ import logoImage from './assets/logo.png'
 import Nav from './Nav'
 import './Landing.css'
 
-function Landing({ onStartTripping, onNavigate, currentPage }) {
+function Landing({ onStartTripping, onNavigate, currentPage, onLogout, showError, showSuccess }) {
   const images = [landingImage, l2Image, l3Image, l4Image, l5Image, l6Image, l7Image]
   const [currentIndex, setCurrentIndex] = useState(0)
   const scrollTimeout = useRef(null)
@@ -89,7 +89,7 @@ function Landing({ onStartTripping, onNavigate, currentPage }) {
 
       {/* Right Section - Content */}
       <div className="landing-right">
-        <Nav className="sticky" onNavigate={onNavigate} currentPage={currentPage} />
+        <Nav className="sticky" onNavigate={onNavigate} currentPage={currentPage} onLogout={onLogout} />
 
         <div className="landing-content">
           <h1 className="landing-title" style={{ '--bg-image': `url(${images[currentIndex]})` }}>

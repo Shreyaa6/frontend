@@ -1,0 +1,473 @@
+.explore-container {
+  min-height: 100vh;
+  background: #E8E8E8;
+  padding: 32px 48px 60px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.explore-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.explore-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.explore-title {
+  font-size: 3rem;
+  font-weight: 300;
+  color: #11120D;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.explore-subtitle {
+  font-size: 1.1rem;
+  color: #565449;
+  font-weight: 300;
+}
+
+/* Search Form */
+.explore-search-form {
+  margin-bottom: 32px;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #E8E8E8;
+  padding: 16px 20px;
+  border-radius: 20px;
+  box-shadow: 
+    8px 8px 16px rgba(0, 0, 0, 0.1),
+    -8px -8px 16px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.7);
+}
+
+.search-icon {
+  color: #666;
+  flex-shrink: 0;
+}
+
+.explore-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #333;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+}
+
+.explore-search-input::placeholder {
+  color: #999;
+}
+
+.explore-search-btn {
+  padding: 12px 24px;
+  border: none;
+  background: #E8E8E8;
+  color: #333;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.1),
+    -4px -4px 8px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.explore-search-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.explore-search-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Results Tabs */
+.results-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.result-tab {
+  padding: 12px 24px;
+  border: none;
+  background: #E8E8E8;
+  color: #666;
+  font-size: 15px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+  font-family: inherit;
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.result-tab:hover {
+  color: #333;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.08),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.9);
+}
+
+.result-tab.active {
+  background: #E8E8E8;
+  color: #333;
+  font-weight: 500;
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.1),
+    -4px -4px 8px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Loading State */
+.loading-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #E8E8E8;
+  border-top-color: #666;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Results Container */
+.results-container {
+  background: #E8E8E8;
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 
+    8px 8px 16px rgba(0, 0, 0, 0.1),
+    -8px -8px 16px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.7);
+}
+
+.results-section {
+  min-height: 300px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #11120D;
+  margin-bottom: 24px;
+}
+
+/* Places Grid */
+.places-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.place-card {
+  background: #E8E8E8;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.place-card:hover {
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.1),
+    -4px -4px 8px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.place-day {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #11120D;
+  margin-bottom: 12px;
+}
+
+.place-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.place-list li {
+  padding: 8px 0;
+  color: #565449;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.place-list li:last-child {
+  border-bottom: none;
+}
+
+/* Food Grid */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.food-card {
+  background: #E8E8E8;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.food-day {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #11120D;
+  margin-bottom: 12px;
+}
+
+.food-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.food-list li {
+  padding: 8px 0;
+  color: #565449;
+}
+
+.restaurant-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.restaurant-card {
+  background: #E8E8E8;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.restaurant-card h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #11120D;
+  margin-bottom: 8px;
+}
+
+.restaurant-card p {
+  color: #565449;
+  font-size: 0.9rem;
+  margin: 4px 0;
+}
+
+/* Itinerary */
+.itinerary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.itinerary-day {
+  background: #E8E8E8;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.itinerary-day-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #11120D;
+  margin-bottom: 16px;
+}
+
+.itinerary-activities h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #11120D;
+  margin-bottom: 8px;
+}
+
+.itinerary-activities ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.itinerary-activities li {
+  padding: 6px 0;
+  color: #565449;
+  padding-left: 20px;
+  position: relative;
+}
+
+.itinerary-activities li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #11120D;
+}
+
+/* Tips */
+.tips-container {
+  background: #E8E8E8;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tip-item {
+  padding: 12px 0;
+  color: #565449;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-left: 24px;
+  position: relative;
+}
+
+.tip-item::before {
+  content: '💡';
+  position: absolute;
+  left: 0;
+}
+
+.tip-item:last-child {
+  border-bottom: none;
+}
+
+/* Info Text */
+.info-text {
+  padding: 40px 20px;
+  text-align: center;
+  color: #565449;
+}
+
+.gemini-text {
+  text-align: left;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Popular Destinations */
+.popular-destinations {
+  margin-top: 48px;
+}
+
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.destination-card {
+  background: #E8E8E8;
+  padding: 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.destination-card:hover {
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.1),
+    -4px -4px 8px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.destination-card h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #11120D;
+  margin-bottom: 8px;
+}
+
+.destination-card p {
+  font-size: 0.9rem;
+  color: #565449;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .explore-container {
+    padding: 24px 20px 40px;
+  }
+
+  .explore-title {
+    font-size: 2rem;
+  }
+
+  .search-input-wrapper {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .explore-search-input {
+    width: 100%;
+  }
+
+  .explore-search-btn {
+    width: 100%;
+  }
+
+  .results-tabs {
+    gap: 8px;
+  }
+
+  .result-tab {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .places-grid,
+  .food-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

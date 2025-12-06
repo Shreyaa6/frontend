@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Nav from './Nav'
 import './Dashboard.css'
 
-function Dashboard({ onNavigate, currentPage }) {
+function Dashboard({ onNavigate, currentPage, onLogout, showError, showSuccess }) {
   const [upcomingTrips] = useState([
     {
       id: 1,
@@ -53,7 +53,7 @@ function Dashboard({ onNavigate, currentPage }) {
 
   return (
     <div className="home-container">
-      <Nav onNavigate={onNavigate} currentPage={currentPage} />
+      <Nav onNavigate={onNavigate} currentPage={currentPage} onLogout={onLogout} />
       <div className="home-header">
         <h1 className="home-title">Your Travel Dashboard</h1>
         <p className="home-subtitle">Plan, explore, and relive your journeys</p>

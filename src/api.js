@@ -91,61 +91,6 @@ export const api = {
     }
   },
 
-  // Gemini AI API
-  geminiChat: async (message, history = []) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/gemini/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message, history }),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
-        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
-      }
-      throw error;
-    }
-  },
-
-  geminiGenerateText: async (prompt) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/gemini/generate-text`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt }),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
-        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
-      }
-      throw error;
-    }
-  },
-
-  geminiTripSuggestions: async (destination, duration, budget, interests) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/gemini/trip-suggestions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ destination, duration, budget, interests }),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
-        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
-      }
-      throw error;
-    }
-  },
-
   // RapidAPI - Flights
   searchFlights: async (departureId, arrivalId, travelClass = 'ECONOMY', adults = 1, currency = 'USD') => {
     try {
@@ -181,15 +126,21 @@ export const api = {
     }
   },
 
-  // RapidAPI - Hotels
-  searchHotels: async (placeId, adults = 1, currency = 'USD') => {
+  // RapidAPI - Cars
+  searchCarRentals: async (pickUpLat, pickUpLng, dropOffLat, dropOffLng, pickUpDateTime, dropOffDateTime, driverAge = 30, currency = 'USD') => {
     try {
       const params = new URLSearchParams({
-        placeId,
-        adults: adults.toString(),
-        currency
+        pick_up_latitude: pickUpLat.toString(),
+        pick_up_longitude: pickUpLng.toString(),
+        drop_off_latitude: dropOffLat.toString(),
+        drop_off_longitude: dropOffLng.toString(),
+        pick_up_datetime: pickUpDateTime,
+        drop_off_datetime: dropOffDateTime,
+        driver_age: driverAge.toString(),
+        currency_code: currency,
+        location: 'US'
       });
-      const response = await fetch(`${API_BASE_URL}/api/hotels/airbnb?${params}`);
+      const response = await fetch(`${API_BASE_URL}/api/cars/search?${params}`);
       return handleResponse(response);
     } catch (error) {
       if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
@@ -199,10 +150,16 @@ export const api = {
     }
   },
 
-  // RapidAPI - Places/Restaurants
-  searchRestaurants: async (locationId) => {
+  // RapidAPI - Buses
+  generateBusTimetable: async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/places/restaurants?locationId=${locationId}`);
+      const response = await fetch(`${API_BASE_URL}/api/buses/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({})
+      });
       return handleResponse(response);
     } catch (error) {
       if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
@@ -211,6 +168,47 @@ export const api = {
       throw error;
     }
   },
+
+  // Hotels - Free API with OpenRouter fallback
+  searchHotels: async (destId, checkInDate, checkOutDate, adults = 2, currency = 'USD', cityName = '') => {
+    try {
+      const params = new URLSearchParams({
+        dest_id: destId,
+        dest_type: 'city',
+        checkin_date: checkInDate,
+        checkout_date: checkOutDate,
+        adults_number: adults.toString(),
+        room_number: '1',
+        currency,
+        ...(cityName && { city_name: cityName })
+      });
+      const response = await fetch(`${API_BASE_URL}/api/hotels/search?${params}`);
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  // Get hotel locations (for finding destination IDs)
+  getHotelLocations: async (name) => {
+    try {
+      const params = new URLSearchParams({
+        name,
+        locale: 'en-us'
+      });
+      const response = await fetch(`${API_BASE_URL}/api/hotels/locations?${params}`);
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
 
   // RapidAPI - Weather
   getWeatherForecast: async (place, cnt = 3, units = 'standard', lang = 'en') => {
@@ -253,6 +251,202 @@ export const api = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ days, destination, interests, budget, travelMode }),
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  // Trip Management
+  createTrip: async (tripData) => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/trips`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(tripData),
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  getTrips: async () => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/trips`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  getTrip: async (tripId) => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/trips/${tripId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  updateTrip: async (tripId, tripData) => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/trips/${tripId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(tripData),
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  deleteTrip: async (tripId) => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/trips/${tripId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  // Budget Management
+  getBudgets: async () => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/budgets`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  getBudget: async (budgetId) => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/budgets/${budgetId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  createBudget: async (budgetData) => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/budgets`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(budgetData),
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  updateBudget: async (budgetId, budgetData) => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/budgets/${budgetId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(budgetData),
+      });
+      return handleResponse(response);
+    } catch (error) {
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        throw new Error('Cannot connect to server. Please make sure the backend server is running on ' + API_BASE_URL);
+      }
+      throw error;
+    }
+  },
+
+  deleteBudget: async (budgetId) => {
+    try {
+      const token = tokenManager.get();
+      const response = await fetch(`${API_BASE_URL}/api/budgets/${budgetId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
       });
       return handleResponse(response);
     } catch (error) {

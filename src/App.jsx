@@ -3,7 +3,6 @@ import LoginSignup from './login_signup'
 import Landing from './Landing'
 import Dashboard from './Dashboard'
 import CreateTrip from './CreateTrip'
-import Explore from './Explore'
 import BudgetPlanner from './BudgetPlanner'
 import Weather from './Weather'
 import { tokenManager } from './api'
@@ -14,6 +13,9 @@ import './App.css'
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [currentPage, setCurrentPage] = useState('home')
+  const [tripId, setTripId] = useState(null) // For viewing/editing trips
+  const [tripMode, setTripMode] = useState('create') // create, view, edit
+  const [destination, setDestination] = useState(null) // For pre-filling destination
   const { notifications, removeNotification, showSuccess, showError } = useNotification()
 
   useEffect(() => {
@@ -29,8 +31,11 @@ function App() {
     showSuccess('Login successful!')
   }
 
-  const handleNavigate = (page) => {
+  const handleNavigate = (page, id = null, mode = 'create', dest = null) => {
     setCurrentPage(page)
+    setTripId(id) // Set tripId if provided (for viewing/editing)
+    setTripMode(mode) // Set mode: create, view, or edit
+    setDestination(dest) // Set destination if provided (for pre-filling)
   }
 
   const handleLogout = () => {
@@ -57,9 +62,26 @@ function App() {
       ) : currentPage === 'dashboard' ? (
         <Dashboard onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} showError={showError} showSuccess={showSuccess} />
       ) : currentPage === 'create-trip' ? (
-        <CreateTrip onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} showError={showError} showSuccess={showSuccess} />
-      ) : currentPage === 'explore' ? (
-        <Explore onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} showError={showError} showSuccess={showSuccess} />
+        <CreateTrip 
+          onNavigate={handleNavigate} 
+          currentPage={currentPage} 
+          onLogout={handleLogout} 
+          showError={showError} 
+          showSuccess={showSuccess}
+          tripId={tripId}
+          tripMode={tripMode}
+          destination={destination}
+          onTripSaved={() => {
+            setTripId(null)
+            setTripMode('create')
+            setDestination(null)
+          }}
+          onTripDeleted={() => {
+            setTripId(null)
+            setTripMode('create')
+            setDestination(null)
+          }}
+        />
       ) : currentPage === 'budget-planner' ? (
         <BudgetPlanner onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} showError={showError} showSuccess={showSuccess} />
       ) : currentPage === 'weather' ? (
